@@ -1,0 +1,28 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+.venv/
+venv/
+
+# paper-finder runtime artifacts (intermediate JSON cache)
+**/.paper-finder/
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Build outputs (don't commit user reports)
+**/papers/*/report.md
+**/papers/*/report.docx
+**/papers/*/directions.md
