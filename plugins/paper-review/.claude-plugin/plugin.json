@@ -1,0 +1,10 @@
+{
+  "name": "paper-review",
+  "version": "0.1.0",
+  "description": "작성한 논문 검증 통합 플러그인. 적대적 리뷰어 시뮬레이션 + 클레임-증거 매핑 + 저널 norm 매칭 + ESWA 체크리스트 + reviewer-response letter 생성까지 5개 스킬 + 2개 슬래시 커맨드.",
+  "author": {
+    "name": "Rosechang",
+    "email": "rosechang870827@gmail.com"
+  },
+  "license": "MIT"
+}

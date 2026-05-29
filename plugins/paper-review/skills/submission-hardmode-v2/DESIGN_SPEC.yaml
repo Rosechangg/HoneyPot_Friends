@@ -1,0 +1,478 @@
+SKILL_NAME: SUBMISSION_HARDMODE_v2
+
+TRIGGER_COMMAND: "RUN SUBMISSION_HARDMODE"
+
+REQUIRED_INPUTS:
+  - target_journal: string
+  - experimental_results: structured_data
+
+OPTIONAL_INPUTS:
+  - journal_examples_folder: "path (if not provided, auto-search via librarian)"
+  - field: "string (default: HCI)"
+  - mode: "enum [Conservative, Aggressive] (default: Conservative)"
+  - statistical_strictness: "enum [Low, Medium, High] (default: High)"
+
+GLOBAL_RULES:
+  - NO_OVERCLAIMING: All claims must map to explicit evidence
+  - CLAIM_CLASSIFICATION: Label each claim as [Supported|Speculative]
+  - METHODOLOGY_GATING: Block drafting if fatal methodological flaws detected
+  - JOURNAL_ALIGNMENT: Auto-correct framing mismatches to journal norms
+  - CLARITY_ENFORCEMENT: Use clear, concise sentences only
+  - INCREMENTAL_RISK_ASSESSMENT: Mandatory evaluation before drafting
+  - STATISTICAL_TRANSPARENCY: Report effect sizes and p-values for major claims
+  - LOGIC_FIRST: Complete argument structure design before writing
+  - SCOPE_VERIFICATION: Validate alignment with journal Aim & Scope
+  - EVIDENCE_REQUIREMENTS: Claim without evidence = invalid claim
+
+PIPELINE_STRUCTURE:
+  execution_mode: sequential_with_gates
+  parallel_allowed: [PHASE_0_LIBRARIAN, PHASE_1_5_NOVELTY]
+  blocking_phases: [PHASE_2_METIS, PHASE_3_SISYPHUS]
+  
+  phases:
+    - id: PHASE_-1
+      name: Reference Paper Collection
+      agent: librarian
+      conditional: true
+      description: "Runs only if journal_examples_folder not provided"
+      
+    - id: PHASE_0
+      name: Journal Profiling
+      agent: librarian
+      parallel: true
+      
+    - id: PHASE_0_5
+      name: Scope Alignment Check
+      agent: architect
+      gate: true
+      
+    - id: PHASE_1
+      name: Contribution Lock
+      agent: prometheus
+      
+    - id: PHASE_1_5
+      name: Novelty Differentiation
+      agent: librarian
+      parallel: true
+      
+    - id: PHASE_2
+      name: Hostile Review Simulation
+      agent: metis
+      blocking: true
+      
+    - id: PHASE_3
+      name: Fatal Risk Mitigation
+      agent: sisyphus
+      mode: ulw_enabled
+      blocking: true
+      
+    - id: PHASE_3_5
+      name: Narrative Architecture
+      agent: architect
+      
+    - id: PHASE_4
+      name: Manuscript Drafting
+      agent: hephaestus
+      
+    - id: PHASE_5
+      name: Final Stress Test
+      agent: momus
+
+PHASE_DETAILS:
+
+  PHASE_-1_COLLECTION:
+    objective: "Collect 3-5 recent papers from target journal if not provided"
+    trigger: "journal_examples_folder is None or empty"
+    inputs:
+      - target_journal
+      - field
+    outputs:
+      - paper_list: list[paper_metadata]
+      - saved_location: "references/journal_papers/"
+      - paper_inventory: "references/paper_inventory.json"
+    agent_prompt_template: |
+      Search for 3-5 recent papers (2022-2024) from {target_journal} in {field}.
+      
+      Prioritize:
+      - High citation count
+      - Methodological diversity
+      - Recent publication
+      - Full text accessible
+      
+      For each paper:
+      - Title, Authors, Year, DOI
+      - PDF link (if available)
+      - Abstract
+      
+      Save to: references/journal_papers/
+      Format: {journal_abbrev}_{year}_{first_author}.pdf
+      
+      Return JSON with metadata.
+      
+      Fallback: If unable to download PDFs, save metadata only.
+
+  PHASE_0_LIBRARIAN:
+    objective: "Extract journal acceptance patterns from example papers"
+    inputs:
+      - journal_examples_folder
+      - target_journal
+    outputs:
+      - contribution_framing_patterns: list[pattern]
+      - methodological_rigor_threshold: enum[Low, Medium, High, Extreme]
+      - common_rejection_reasons: list[reason]
+      - structural_characteristics: dict
+      - aim_and_scope_summary: text
+    agent_prompt_template: |
+      Analyze {journal_examples_folder} papers from {target_journal}.
+      Extract:
+      1. How contributions are framed (novelty emphasis vs utility)
+      2. Methodological rigor expectations (sample sizes, controls, statistics)
+      3. Recurring rejection reasons from similar submissions
+      4. Structural norms (section organization, figure density)
+      5. Journal Aim & Scope verbatim + interpretation
+      
+      Return structured JSON with confidence scores.
+
+  PHASE_0_5_SCOPE_ALIGNMENT:
+    objective: "Prevent desk rejection via scope mismatch detection"
+    inputs:
+      - experimental_results
+      - aim_and_scope_summary (from PHASE_0)
+    outputs:
+      - alignment_score: float[0-1]
+      - mismatch_risks: list[risk_item]
+      - desk_reject_probability: float[0-1]
+      - alignment_report: structured_text
+    gate_condition: "alignment_score >= 0.7 OR user confirms override"
+    blocking_behavior: "If score < 0.7, halt and present mismatch report"
+
+  PHASE_1_PROMETHEUS:
+    objective: "Lock core contributions with evidence mapping"
+    inputs:
+      - experimental_results
+      - contribution_framing_patterns (from PHASE_0)
+    outputs:
+      - core_contributions: list[3-4 bullet points]
+      - theoretical_positioning: text
+      - claim_evidence_table: |
+          columns: [Claim, Supporting_Result, Statistical_Strength, Limitation]
+          rows: list[claim_mapping]
+    validation_rules:
+      - Each contribution must reference ≥1 experimental result
+      - Statistical strength must be quantified (effect size + significance)
+      - Limitations must be explicitly stated per claim
+    agent_prompt_template: |
+      Given results: {experimental_results}
+      Given journal norms: {contribution_framing_patterns}
+      
+      Define 3-4 core contributions that:
+      1. Are directly supported by results
+      2. Match journal framing style
+      3. Have measurable statistical backing
+      
+      Create claim-evidence table with columns:
+      [Claim | Supporting Result | Statistical Strength | Limitation]
+      
+      Flag any claim without p<0.05 or effect size data.
+
+  PHASE_1_5_NOVELTY:
+    objective: "Differentiate from top-5 related works"
+    inputs:
+      - core_contributions (from PHASE_1)
+      - field
+    outputs:
+      - related_papers: list[5 papers with summaries]
+      - differentiation_matrix: |
+          columns: [Paper, Their_Contribution, Our_Difference, Novelty_Type]
+      - incremental_risk_score: float[0-1]
+      - novelty_strength_score: float[0-1]
+    agent_prompt_template: |
+      Search {field} for top-5 papers similar to {core_contributions}.
+      
+      Create comparison matrix:
+      | Paper | Their Contribution | Our Difference | Novelty Type |
+      
+      Novelty Types: [Methodological, Theoretical, Domain, Scale, Generalization]
+      
+      Calculate:
+      - Incremental risk (0=transformative, 1=marginal extension)
+      - Novelty strength (0=weak differentiation, 1=clear gap filled)
+      
+      If incremental_risk > 0.7, flag as HIGH RISK.
+
+  PHASE_2_METIS:
+    objective: "Simulate hostile reviewer feedback"
+    inputs:
+      - core_contributions (from PHASE_1)
+      - claim_evidence_table (from PHASE_1)
+      - methodological_rigor_threshold (from PHASE_0)
+      - mode (Conservative/Aggressive)
+    outputs:
+      - reviewer_personas: list[3 simulated reviewers]
+      - rejection_arguments: list[10 strongest critiques]
+      - severity_ratings: dict[critique_id -> enum[Fatal, Major, Minor]]
+      - fatal_risks_top3: list[3 items]
+    agent_config:
+      temperature: 0.3
+      persona_strictness: "Match to mode parameter"
+    agent_prompt_template: |
+      You are 3 reviewers for {target_journal} with {methodological_rigor_threshold} standards.
+      Mode: {mode}
+      
+      Review:
+      - Contributions: {core_contributions}
+      - Evidence: {claim_evidence_table}
+      
+      Generate 10 strongest rejection arguments.
+      Rate severity: [Fatal | Major | Minor]
+      
+      Fatal = desk reject or require major experiments
+      Major = accept with revisions likely
+      Minor = accept with minor revisions
+      
+      Return top-3 Fatal risks with remediation requirements.
+
+  PHASE_3_SISYPHUS:
+    objective: "Mitigate only Fatal risks via minimal additions"
+    inputs:
+      - fatal_risks_top3 (from PHASE_2)
+      - experimental_results
+      - statistical_strictness
+    outputs:
+      - mitigation_plan: list[action_items]
+      - additional_experiments: list[experiment_design]
+      - execution_results: structured_data
+      - updated_claim_evidence_table: extended_table
+      - statistical_report: |
+          includes: [effect_sizes, power_analysis, multiple_comparison_corrections]
+    execution_mode: ulw_enabled
+    blocking: true
+    agent_prompt_template: |
+      Fatal risks: {fatal_risks_top3}
+      
+      For EACH risk:
+      1. Design minimal experiment/analysis to address it
+      2. Execute (simulate if needed)
+      3. Generate statistical report:
+         - Effect size (Cohen's d / η² / etc.)
+         - Power analysis (post-hoc)
+         - Multiple comparison corrections (if applicable)
+      4. Update claim-evidence table
+      
+      Do NOT add non-essential work.
+      Strictness: {statistical_strictness}
+      
+      HALT if experiments cannot address Fatal risk.
+
+  PHASE_3_5_NARRATIVE:
+    objective: "Design paper-level argument architecture"
+    inputs:
+      - updated_claim_evidence_table (from PHASE_3)
+      - structural_characteristics (from PHASE_0)
+    outputs:
+      - argument_map: DAG[claim -> supporting_claim -> evidence]
+      - figure_sequence: list[figure_plan]
+      - claim_figure_mapping: dict[claim_id -> figure_id]
+      - logic_flow_diagram: visual_representation
+    agent_prompt_template: |
+      Given claims: {updated_claim_evidence_table}
+      Given journal structure: {structural_characteristics}
+      
+      Design:
+      1. Argument DAG (top claim → sub-claims → evidence nodes)
+      2. Figure sequence that matches argument flow
+      3. Mapping: which claim is supported by which figure
+      4. Section-level logic flow
+      
+      Ensure:
+      - No orphan claims (all connected to evidence)
+      - Figures appear before referenced in text
+      - Logical progression from problem → solution → validation
+
+  PHASE_4_HEPHAESTUS:
+    objective: "Draft manuscript sections"
+    inputs:
+      - all previous phase outputs
+      - target_journal
+    outputs:
+      - abstract: text[250 words max]
+      - introduction: structured_text
+      - methods: structured_text
+      - results: structured_text
+      - discussion: structured_text
+    section_requirements:
+      abstract:
+        - Problem statement (1 sentence)
+        - Gap (1 sentence)
+        - Approach (2 sentences)
+        - Key results (2 sentences)
+        - Contribution (1 sentence)
+      introduction:
+        - Problem → Gap → Approach → Contribution structure
+        - Cite related work in context
+        - End with paper organization
+      methods:
+        - Rigor emphasis per journal threshold
+        - Justify sample sizes
+        - Detail statistical procedures
+      results:
+        - Organize by claim from claim_evidence_table
+        - Lead with strongest results
+        - Report effect sizes + significance
+      discussion:
+        - Theoretical implications
+        - Design implications
+        - Limitations (explicit and upfront)
+        - Future work (brief)
+    writing_rules:
+      - Active voice where possible
+      - No hedging for supported claims
+      - Explicit hedging for speculative claims
+      - Clear topic sentences per paragraph
+      - Max 25 words per sentence (average)
+
+  PHASE_5_MOMUS:
+    objective: "Final adversarial stress test"
+    inputs:
+      - complete manuscript draft (from PHASE_4)
+      - all phase outputs
+    outputs:
+      - strongest_rejection_scenario: text
+      - desk_reject_probability: float[0-1]
+      - acceptance_probability: float[0-1]
+      - confidence_rationale: text
+      - required_revisions: list[item]
+    agent_config:
+      temperature: 0.2
+      role: "Harshest possible reviewer"
+    agent_prompt_template: |
+      Review this complete manuscript as the MOST CRITICAL reviewer.
+      
+      Provide:
+      1. Single most convincing rejection argument
+      2. Desk reject probability (0-1) with justification
+      3. Acceptance probability (0-1) with justification
+      4. Must-fix items before submission
+      
+      Be brutally honest. Identify:
+      - Scope misalignment
+      - Weak evidence chains
+      - Overclaiming
+      - Methodological gaps
+      - Incremental contribution risk
+
+FAILSAFE_RULES:
+  - HALT_ON_SCOPE_MISMATCH: |
+      If PHASE_0_5 alignment_score < 0.7 AND user does not override,
+      terminate pipeline and output scope mismatch report only.
+      
+  - HALT_ON_FATAL_METHODOLOGY: |
+      If PHASE_2 identifies Fatal risk that PHASE_3 cannot mitigate,
+      terminate before PHASE_4 and output:
+      - Gap description
+      - Required experiments
+      - Estimated timeline
+      Do NOT draft manuscript.
+      
+  - DOWNGRADE_MODE_ON_WEAK_NOVELTY: |
+      If PHASE_1_5 incremental_risk_score > 0.7,
+      issue WARNING and ask user to:
+      - Proceed with high rejection risk
+      - Abort and strengthen contribution
+      
+  - BLOCK_DRAFTING_WITHOUT_EVIDENCE: |
+      If any claim in claim_evidence_table lacks:
+      - Statistical backing (p-value or effect size)
+      - Direct experimental support
+      Block PHASE_4 and request clarification.
+      
+  - REQUIRE_STATISTICAL_REPORT: |
+      PHASE_3 must generate statistical report with:
+      - Effect sizes for all major claims
+      - Power analysis (post-hoc)
+      - Multiple comparison corrections
+      If missing, block PHASE_4.
+
+USAGE_EXAMPLE: |
+  EXAMPLE 1: With provided journal examples
+  ```
+  RUN SUBMISSION_HARDMODE
+  
+  TARGET_JOURNAL: "ACM TOCHI"
+  JOURNAL_EXAMPLES: "./papers/tochi_2023_examples/"
+  EXPERIMENTAL_RESULTS: {
+    study_1: {
+      participants: 48,
+      design: "2x2 within-subjects",
+      dependent_vars: ["task_time", "error_rate", "satisfaction"],
+      results: {
+        task_time: {effect: "F(1,47)=12.3, p<0.001, ηp²=0.21"},
+        error_rate: {effect: "F(1,47)=5.6, p=0.022, ηp²=0.11"},
+        satisfaction: {effect: "F(1,47)=18.9, p<0.001, ηp²=0.29"}
+      }
+    }
+  }
+  FIELD: "Human-Computer Interaction"
+  MODE: Conservative
+  STATISTICAL_STRICTNESS: High
+  ```
+  
+  OUTPUT:
+  - PHASE 0: Journal profiled from provided folder
+  - Scope alignment score: 0.85 (PASS)
+  - Core contributions locked (4 items)
+  - Novelty differentiation complete (incremental_risk=0.3, LOW RISK)
+  - Hostile review: 2 Fatal risks identified
+  - Mitigation: Added power analysis + effect size reporting
+  - Manuscript drafted (6,800 words)
+  - Final stress test: Acceptance probability 0.72
+  - Required revisions: 3 items (all Minor severity)
+  
+  READY FOR SUBMISSION: YES
+  ```
+  
+  EXAMPLE 2: Auto-search for journal examples
+  ```
+  RUN SUBMISSION_HARDMODE
+  
+  TARGET_JOURNAL: "ACM CHI"
+  # JOURNAL_EXAMPLES not provided - will auto-search
+  EXPERIMENTAL_RESULTS: {
+    study_1: {
+      participants: 48,
+      design: "2x2 within-subjects",
+      dependent_vars: ["task_time", "error_rate", "satisfaction"],
+      results: {
+        task_time: {effect: "F(1,47)=12.3, p<0.001, ηp²=0.21"},
+        error_rate: {effect: "F(1,47)=5.6, p=0.022, ηp²=0.11"},
+        satisfaction: {effect: "F(1,47)=18.9, p<0.001, ηp²=0.29"}
+      }
+    }
+  }
+  FIELD: "Human-Computer Interaction"
+  MODE: Conservative
+  STATISTICAL_STRICTNESS: High
+  ```
+  
+  OUTPUT:
+  - PHASE -1: Reference papers collected (5 papers from ACM CHI 2023-2024)
+              Saved to references/journal_papers/
+  - PHASE 0: Journal profiled from collected papers
+  - Scope alignment score: 0.85 (PASS)
+  - Core contributions locked (4 items)
+  - Novelty differentiation complete (incremental_risk=0.3, LOW RISK)
+  - Hostile review: 2 Fatal risks identified
+  - Mitigation: Added power analysis + effect size reporting
+  - Manuscript drafted (6,800 words)
+  - Final stress test: Acceptance probability 0.72
+  - Required revisions: 3 items (all Minor severity)
+  
+  READY FOR SUBMISSION: YES
+  ```
+
+OUTPUT_FORMAT_ENFORCEMENT:
+  - All outputs must be structured data (JSON/YAML/Tables)
+  - No prose explanations in pipeline outputs
+  - Claim-evidence table is mandatory at every phase
+  - All probabilities must include confidence intervals
+  - All phase outputs must be machine-readable for audit trail

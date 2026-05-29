@@ -1,22 +1,22 @@
 # paper-workflow
 
-영문 학술 논문 작성 통합 워크플로우 플러그인. 여러 번의 실제 논문 작업에서 축적된 규칙과 워크플로우를 10개 스킬 + 4개 슬래시 커맨드로 패키징.
+영문 학술 논문 **작성** 통합 워크플로우 플러그인. 여러 번의 실제 논문 작업에서 축적된 규칙과 워크플로우를 8개 스킬 + 4개 슬래시 커맨드로 패키징.
+
+> **검증·응답 관련 스킬은 [paper-review](../paper-review/) 플러그인으로 분리되었습니다.** (eswa-paper-review-checklist, reviewer-response)
 
 ## 구성
 
-### 스킬 10개
+### 스킬 8개
 
 | 카테고리 | 스킬 | 역할 |
 |---------|------|------|
 | 기본 규칙 | `academic-paper-basics` | 약어·흐름·용어·톤·숫자 표기 (always-apply) |
-| 기본 규칙 | `eswa-paper-review-checklist` | ESWA 제출용 10가지 검토 항목 |
 | 번역 | `korean-to-english-paper-translation` | 한→영 논문 번역 규칙 |
 | 번역 | `word-equation-rendering` | LaTeX→Word 수식 변환 문제 해결 |
 | 워크플로우 | `paper-workflow` | docx-as-source, 변환 전 백업, figure 자동실행 |
 | 워크플로우 | `paper-docx-manager` | docx 버전 관리, 백업, source-of-truth 원칙 |
 | 도구 | `figure-pipeline` | `gen_fig*.py` 수정→실행→stale 감지→docx 백업 |
 | 도구 | `experiment-to-table` | JSON 실험 결과 → 학술 테이블 (bold best, ±std, p-value) |
-| 도구 | `reviewer-response` | 리뷰어 코멘트 → point-by-point response letter |
 | 구조 | `research-project-scaffold` | 연구 프로젝트 표준 구조 + git 버전 관리 |
 
 ### 슬래시 커맨드 4개

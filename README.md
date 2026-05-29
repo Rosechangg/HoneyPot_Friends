@@ -1,8 +1,8 @@
 # HoneyPot_Friends
 
-> Claude Code 플러그인 마켓플레이스 — **학술 연구 워크플로우**: 논문 탐색·표 레포트화·작성·번역·리뷰어 응답까지 한 묶음
+> Claude Code 플러그인 마켓플레이스 — **학술 연구 워크플로우**: 논문 탐색·작성·제출 전 검증·리뷰어 응답까지 한 묶음
 
-**Version**: 1.0.0 &nbsp;|&nbsp; **Author**: [Rosechang](https://github.com/Rosechangg) &nbsp;|&nbsp; **License**: MIT
+**Version**: 1.1.0 &nbsp;|&nbsp; **Author**: [Rosechang](https://github.com/Rosechangg) &nbsp;|&nbsp; **License**: MIT
 
 > 영감: [orientpine/honeypot](https://github.com/orientpine/honeypot) marketplace 구조
 
@@ -34,6 +34,12 @@ git clone https://github.com/Rosechangg/HoneyPot_Friends.git
 
 # 한→영 논문 번역 (학술 규칙 자동 적용)
 /paper-workflow:paper-translate
+
+# 제출 직전 종합 검증 (submission-hardmode-v2 메인 엔진)
+/paper-review:verify paper.docx --journal=ESWA
+
+# 리뷰어 코멘트 받은 후 point-by-point response letter
+/paper-review:respond reviews.md --manuscript=paper_revised.docx
 ```
 
 ---
@@ -43,7 +49,8 @@ git clone https://github.com/Rosechangg/HoneyPot_Friends.git
 | 카테고리 | 플러그인 | 설명 |
 |:--------:|----------|------|
 | 탐색 | [**paper-finder**](#paper-finder) | 키워드 → arXiv + Semantic Scholar 병렬 검색 → 표 레포트(.md/.docx) → 연구 방향 제안 |
-| 작성 | [**paper-workflow**](#paper-workflow) | 논문 작성 통합 워크플로우 — 기본 규칙·번역·figure·docx 관리·reviewer response |
+| 작성 | [**paper-workflow**](#paper-workflow) | 논문 작성 통합 워크플로우 — 기본 규칙·번역·figure·docx 관리 |
+| 검증 | [**paper-review**](#paper-review) | 작성한 논문 제출 전 최종 검증 (submission-hardmode-v2 메인 엔진 + 5-phase 파이프라인) |
 
 ---
 
@@ -168,23 +175,90 @@ git clone https://github.com/Rosechangg/HoneyPot_Friends.git
 
 ---
 
-## 두 플러그인의 워크플로우 연계
+<br>
+
+# 검증
+
+---
+
+## paper-review
+
+> 작성한 논문의 **제출 직전 최종 검증** 플러그인. 본인 작성 `submission-hardmode-v2`를 메인 엔진으로, 그 앞단에 입력 정제·뒷단에 응답을 묶은 5-phase 파이프라인.
+
+### 사용법
+
+```bash
+# 제출 직전 종합 검증 (5단계)
+/paper-review:verify <manuscript> --journal=<저널명> [--examples=path/] [--mode=conservative]
+
+# Revision 단계 — point-by-point response letter
+/paper-review:respond <reviews> [--manuscript=path]
+```
+
+### 5-Phase 파이프라인
+
+```
+[Phase 1] journal-fit-checker              ─ scope/contribution/분량/통계 엄격성 매칭, desk reject 사전 차단
+[Phase 2] claim-evidence-mapper            ─ 모든 claim → 증거 매핑 표, over-claim 표시
+[Phase 3] eswa-paper-review-checklist      ─ 문장 흐름·용어·약어·reference·figure 번호 표면 품질
+[Phase 4] ★ submission-hardmode-v2         ─ 본인 작성 메인 엔진 (적대적 리뷰어 3종 + fatal risk + novelty diff + stat rigor)
+[Phase 5] reviewer-response                ─ (선택) 리뷰어 코멘트 받은 후 4단계 패턴 point-by-point 응답
+```
+
+### 주요 특징
+
+- **★ submission-hardmode-v2 (본인 작성)가 핵심 엔진** — 다른 4개 스킬은 그 엔진의 입력 정제·출력 연결 역할
+- **paper-finder의 related work pool** — `--related-work=path/ranked.json` 인자로 전달 시 Phase 4 novelty differentiation 강화
+- **paper-workflow의 docx 규칙 상속** — manuscript가 docx면 자동 백업·source-of-truth 규칙 적용
+- **acceptance probability 추정 + must_fix Top-N** — 5-phase 결과 종합
+
+<details>
+<summary>구성 요소 (5 Skills · 2 Commands)</summary>
+
+| 스킬 | 역할 |
+|------|------|
+| `paper-review-orchestrator` | 5-phase 오케스트레이션 메인 |
+| `journal-fit-checker` | Phase 1: 저널 scope/contribution 매칭 |
+| `claim-evidence-mapper` | Phase 2: 클레임 → 증거 매핑 + risk 분류 |
+| `eswa-paper-review-checklist` | Phase 3: 표면 품질 체크리스트 |
+| `submission-hardmode-v2` | ★ Phase 4: 메인 검증 엔진 (본인 작성) |
+| `reviewer-response` | Phase 5: 4단계 패턴 응답 letter |
+
+| 슬래시 커맨드 | 역할 |
+|--------------|------|
+| `/paper-review:verify` | 5-phase 검증 |
+| `/paper-review:respond` | reviewer-response 단독 호출 |
+
+</details>
+
+---
+
+## 세 플러그인의 워크플로우 연계
 
 ```
                           ┌─────────────────┐
-   키워드 입력 ────────▶  │  paper-finder   │ ─────▶  report.md + report.docx + directions.md
-                          │  (탐색·레포트화)  │
-                          └─────────────────┘
-                                                              │
-                                                              │ 후속: 관심 논문 선정
-                                                              ▼
+   키워드 입력 ────────▶  │  paper-finder   │ ─────▶  report.md/.docx + directions.md
+                          │   (탐색)        │           (related work pool, gap, 연구 방향)
+                          └─────────┬───────┘
+                                    │
+                                    ▼
                           ┌─────────────────┐
-   새 논문 시작 ────────▶  │  paper-workflow │ ─────▶  paper draft (md + docx) + figures + response
-                          │  (작성·번역·리뷰)  │
+   새 논문 시작 ────────▶  │ paper-workflow  │ ─────▶  paper draft (md + docx) + figures
+                          │   (작성)        │
+                          └─────────┬───────┘
+                                    │
+                                    ▼ (related work pool도 cross-ref 입력)
+                          ┌─────────────────┐
+   제출 직전     ────────▶  │  paper-review   │ ─────▶  hardmode report + must_fix.md
+                          │ (검증·응답)      │           + response letter (revision 시)
+                          │ ★ submission-   │
+                          │   hardmode-v2   │
                           └─────────────────┘
 ```
 
-paper-finder가 외부 문헌 탐색·시드 잡기를 담당하고, paper-workflow가 본인 논문 작성·관리를 담당합니다.
+- **paper-finder** — 외부 문헌 탐색·gap 파악·연구 방향 제안
+- **paper-workflow** — 본인 논문 작성·번역·docx·figure 관리
+- **paper-review** — 제출 직전 적대적 검증·acceptance probability 추정·리뷰어 응답
 
 ---
 

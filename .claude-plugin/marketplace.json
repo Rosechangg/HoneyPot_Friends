@@ -5,8 +5,8 @@
     "url": "https://github.com/Rosechangg"
   },
   "metadata": {
-    "version": "1.0.0",
-    "description": "학술 연구 워크플로우 Claude Code 플러그인 마켓플레이스 — 키워드 기반 논문 탐색·표 레포트화, 논문 작성·번역·docx 관리·reviewer response까지 한 묶음"
+    "version": "1.1.0",
+    "description": "학술 연구 워크플로우 Claude Code 플러그인 마켓플레이스 — 논문 탐색(paper-finder) + 작성(paper-workflow) + 제출 전 검증(paper-review: submission-hardmode-v2 메인 엔진)"
   },
   "plugins": [
     {
@@ -31,8 +31,8 @@
     {
       "name": "paper-workflow",
       "source": "./plugins/paper-workflow",
-      "description": "영문 학술 논문 작성 통합 워크플로우. 기본 작성 규칙·한→영 번역·figure 파이프라인·docx 관리·reviewer response까지 10개 스킬 + 4개 슬래시 커맨드.",
-      "version": "1.0.0",
+      "description": "영문 학술 논문 작성 통합 워크플로우. 기본 작성 규칙·한→영 번역·figure 파이프라인·docx 관리까지 8개 스킬 + 4개 슬래시 커맨드. (검증·응답은 paper-review로 분리됨)",
+      "version": "1.1.0",
       "author": {
         "name": "Rosechang",
         "email": "rosechang870827@gmail.com"
@@ -44,6 +44,26 @@
         "./commands/paper-translate.md",
         "./commands/paper-review-response.md",
         "./commands/paper-figure.md"
+      ],
+      "skills": [
+        "./skills"
+      ]
+    },
+    {
+      "name": "paper-review",
+      "source": "./plugins/paper-review",
+      "description": "작성한 논문의 제출 전 최종 검증 플러그인. 본인 작성 submission-hardmode-v2를 메인 엔진으로 한 5-phase 파이프라인 (journal-fit → claim-evidence → surface checklist → hardmode → reviewer-response). 5개 스킬 + 2개 슬래시 커맨드.",
+      "version": "0.1.0",
+      "author": {
+        "name": "Rosechang",
+        "email": "rosechang870827@gmail.com"
+      },
+      "license": "MIT",
+      "category": "verification",
+      "strict": true,
+      "commands": [
+        "./commands/verify.md",
+        "./commands/respond.md"
       ],
       "skills": [
         "./skills"
