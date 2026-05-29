@@ -1,16 +1,17 @@
 # paper-workflow
 
-영문 학술 논문 **작성** 통합 워크플로우 플러그인. 여러 번의 실제 논문 작업에서 축적된 규칙과 워크플로우를 8개 스킬 + 4개 슬래시 커맨드로 패키징.
+영문 학술 논문 **작성** 통합 워크플로우 플러그인. outline → chapter-by-chapter manuscript 작성(★ academic-paper-composer)부터 번역·figure·docx 관리까지 9개 스킬 + 5개 슬래시 커맨드.
 
-> **검증·응답 관련 스킬은 [paper-review](../paper-review/) 플러그인으로 분리되었습니다.** (eswa-paper-review-checklist, reviewer-response)
+> **검증·응답 관련 스킬은 [paper-review](../paper-review/) 플러그인으로 분리되었습니다.**
 
 ## 구성
 
-### 스킬 8개
+### 스킬 9개
 
 | 카테고리 | 스킬 | 역할 |
 |---------|------|------|
 | 기본 규칙 | `academic-paper-basics` | 약어·흐름·용어·톤·숫자 표기 (always-apply) |
+| **작성 ★** | `academic-paper-composer` | outline → chapter-by-chapter 본문 작성 + 7-dim quality check + 10-dim final eval (본인 자작) |
 | 번역 | `korean-to-english-paper-translation` | 한→영 논문 번역 규칙 |
 | 번역 | `word-equation-rendering` | LaTeX→Word 수식 변환 문제 해결 |
 | 워크플로우 | `paper-workflow` | docx-as-source, 변환 전 백업, figure 자동실행 |
@@ -19,13 +20,14 @@
 | 도구 | `experiment-to-table` | JSON 실험 결과 → 학술 테이블 (bold best, ±std, p-value) |
 | 구조 | `research-project-scaffold` | 연구 프로젝트 표준 구조 + git 버전 관리 |
 
-### 슬래시 커맨드 4개
+### 슬래시 커맨드 5개
 
 | 커맨드 | 역할 |
 |--------|------|
 | `/paper-workflow:paper-init` | 새 논문 프로젝트 골격 생성 |
+| **`/paper-workflow:paper-compose`** | ★ outline → chapter-by-chapter manuscript (composer) |
 | `/paper-workflow:paper-translate` | 한→영 번역 (기본 규칙 자동 적용) |
-| `/paper-workflow:paper-review-response` | Authors' Response 생성 |
+| `/paper-workflow:paper-review-response` | Authors' Response 생성 (paper-review:respond 권장) |
 | `/paper-workflow:paper-figure` | figure 파이프라인 실행 + stale 감지 |
 
 ## 설계 원칙

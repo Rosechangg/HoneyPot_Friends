@@ -8,6 +8,23 @@ allowed-tools: Read Write Edit Bash
 
 이 프로젝트에서 논문 관련 작업 시 반드시 따라야 하는 규칙들이다.
 
+## 작성 파이프라인
+
+```
+paper-finder:outline 또는 직접 작성
+       ↓ (optimized_outline.md)
+/paper-workflow:paper-compose  ← academic-paper-composer 호출
+       ↓ (chapter-by-chapter + quality check)
+manuscript.md/docx
+       ↓
+/paper-workflow:paper-translate (필요 시 한→영)
+/paper-workflow:paper-figure   (figure 생성·갱신)
+       ↓
+paper-review:verify  (제출 전 검증)
+```
+
+본문 작성 자체는 `academic-paper-composer` 스킬(이 플러그인 내)이 담당한다 — `/paper-workflow:paper-compose <outline.md>` 명령으로 호출. 모든 chapter마다 7-dimension quality check, 완료 후 10-dimension final evaluation.
+
 ---
 
 ## 규칙 1: docx가 최종 기준

@@ -1,7 +1,7 @@
 {
   "name": "paper-workflow",
-  "version": "1.1.0",
-  "description": "영문 학술 논문 작성 통합 워크플로우. 기본 작성 규칙, 한→영 번역, figure 파이프라인, docx 관리, 실험 테이블, 프로젝트 구조까지 8개 스킬 + 4개 슬래시 커맨드. (검증·응답 스킬은 paper-review 플러그인으로 이동)",
+  "version": "1.2.0",
+  "description": "영문 학술 논문 작성 통합 워크플로우. outline → chapter-by-chapter 본문 작성 (academic-paper-composer), 기본 작성 규칙, 한→영 번역, figure 파이프라인, docx 관리, 실험 테이블, 프로젝트 구조까지 9개 스킬 + 5개 슬래시 커맨드.",
   "author": {
     "name": "ADMIN",
     "email": "rosechang870827@gmail.com"

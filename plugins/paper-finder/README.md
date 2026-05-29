@@ -10,11 +10,16 @@
 4. 중복 제거 + venue 매칭 + 인용수/recency 기반 랭킹
 5. **Markdown 표 + Word(.docx)** 레포트 생성 (`paper-report-builder`)
 6. 발견된 논문 기반 연구 방향 3~5개 자동 제안 (`research-direction-brainstormer` → `brainstorming-research-ideas`)
+7. **★ (Phase 6, 선택) detailed paper outline 자동 생성** (`academic-paper-strategist`) — `/paper-workflow:paper-compose`에 바로 전달 가능
 
 ## 사용
 
-```
-/find-papers <키워드> [--required=CVPR,SIGGRAPH] [--years=2022-2026] [--top=30]
+```bash
+# Phase 1~5: 탐색 + 표 레포트 + 방향 제안
+/paper-finder:find-papers <키워드> [--required=CVPR,SIGGRAPH] [--years=2022-2026] [--top=30]
+
+# Phase 6 (선택): 방향 → optimized outline
+/paper-finder:outline papers/<slug>/directions.md --platform=<target> --direction=N
 ```
 
 ## 구조
@@ -22,12 +27,18 @@
 ```
 paper-finder/
 ├── .claude-plugin/plugin.json
-├── commands/find-papers.md       # 슬래시 명령
+├── commands/
+│   ├── find-papers.md            # Phase 1~5
+│   └── outline.md                # ★ Phase 6 (academic-paper-strategist)
 ├── skills/
 │   ├── paper-finder/             # 메인 오케스트레이터
 │   ├── venue-recommender/        # Phase 1
 │   ├── paper-report-builder/     # Phase 4
-│   └── research-direction-brainstormer/  # Phase 5
+│   ├── research-direction-brainstormer/  # Phase 5
+│   └── academic-paper-strategist/        # ★ Phase 6 (본인 자작)
+│       ├── SKILL.md
+│       ├── scripts/{evaluate_samples,gap_analysis}.py
+│       └── references/{quality_standards,search_strategy}.md
 ├── scripts/
 │   ├── search_arxiv.py           # arXiv API
 │   ├── search_semantic_scholar.py # S2 API
@@ -46,6 +57,11 @@ paper-finder/
 - 선택: `S2_API_KEY` (Semantic Scholar rate limit 완화)
 
 ## Changelog
+
+### 0.2.0 (2026-05-29)
+- **★ Phase 6 신설:** `academic-paper-strategist` 스킬을 sub-skill로 번들 (본인 자작) + 신규 슬래시 명령 `/paper-finder:outline`. directions.md → optimized_outline.md 까지 자동.
+- `/paper-finder:outline`은 별도 호출 (메인 `/find-papers`에는 자동 포함 안 됨 — 방향 선택이 interactive 필요).
+- 산출 outline은 paper-workflow의 `/paper-compose`에 바로 전달 가능 → end-to-end 흐름 완성.
 
 ### 0.1.2 (2026-05-28)
 - **arXiv:** retry 횟수 5 → 8회, 백오프 15/30/45/60/90/120/150/180s (총 최대 ~12분). 첫 호출 전 0.5–2.5s jitter + 매 retry 0–5s jitter로 두 API 동시 호출 시 lock-step 회피. **실측: 동시 호출 시 첫 5회 모두 429였던 케이스를 v0.1.2에서 통과**.

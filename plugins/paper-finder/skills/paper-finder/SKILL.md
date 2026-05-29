@@ -98,6 +98,18 @@ python "$PLUGIN_DIR/scripts/build_report.py" \
 
 랭킹된 논문들을 컨텍스트로 사용해 발견된 gap/trend 기반 연구 방향 3~5개를 제안. 출력은 레포트 끝부분에 "## Suggested Research Directions" 섹션으로 append.
 
+### Phase 6 (선택): Outline Generation
+**Skill:** `academic-paper-strategist` (이 플러그인 sub-skill)
+**Command:** `/paper-finder:outline`
+
+Phase 5에서 선택된 연구 방향을 받아 detailed paper outline까지 자동 생성. strategist의 3-phase (platform analysis → theoretical framework → outline optimization) 실행. 산출된 `optimized_outline.md`는 `/paper-workflow:paper-compose`에 바로 전달 가능 → 본문 작성 흐름 연결.
+
+```bash
+/paper-finder:outline papers/<slug>/directions.md --platform=<target> --direction=N
+```
+
+Phase 6은 `/find-papers` 메인 명령에는 자동 포함되지 않는다 (별도 명령 `/paper-finder:outline`으로 호출). 이유: outline 생성은 사용자가 *어떤 방향을 선택했는지*가 결정적이라 interactive하게 분리.
+
 ## 환경
 
 - `$PLUGIN_DIR`: `~/.claude/plugins/marketplaces/my-marketplace/plugins/paper-finder`
