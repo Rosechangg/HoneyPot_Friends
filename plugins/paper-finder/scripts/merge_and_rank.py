@@ -34,25 +34,71 @@ def venue_aliases(name: str) -> set[str]:
     tokens = {name}
     # 주요 conference 약자 ↔ 풀네임 매핑
     mapping = {
+        # CV
         "cvpr": ["ieee/cvf conference on computer vision and pattern recognition", "computer vision and pattern recognition"],
         "iccv": ["ieee/cvf international conference on computer vision", "international conference on computer vision"],
         "eccv": ["european conference on computer vision"],
+        "wacv": ["winter conference on applications of computer vision"],
+        "bmvc": ["british machine vision conference"],
+        # ML/AI
         "neurips": ["neural information processing systems", "nips", "advances in neural information processing systems"],
         "icml": ["international conference on machine learning"],
         "iclr": ["international conference on learning representations"],
         "aaai": ["aaai conference on artificial intelligence"],
+        "ijcai": ["international joint conference on artificial intelligence"],
+        "kdd": ["acm sigkdd", "knowledge discovery and data mining"],
+        # NLP
+        "acl": ["annual meeting of the association for computational linguistics"],
+        "emnlp": ["empirical methods in natural language processing", "conference on empirical methods in natural language processing"],
+        "naacl": ["north american chapter of the association for computational linguistics"],
+        # Graphics
         "siggraph": ["acm siggraph", "acm transactions on graphics"],
         "siggraph asia": ["siggraph asia"],
         "tog": ["acm transactions on graphics"],
+        "egsr": ["eurographics symposium on rendering"],
+        # HCI conferences
         "chi": ["chi conference on human factors in computing systems", "human factors in computing systems"],
         "iui": ["intelligent user interfaces", "acm conference on intelligent user interfaces"],
-        "uist": ["user interface software and technology"],
-        "cscw": ["computer-supported cooperative work"],
+        "uist": ["user interface software and technology", "acm symposium on user interface software"],
+        "cscw": ["computer-supported cooperative work", "computer supported cooperative work"],
+        "dis": ["designing interactive systems"],
+        # HCI journals
+        "ijhci": ["international journal of human-computer interaction", "int. j. hum.-comput. interact.", "int. j. hum. comput. interact."],
+        "ijhcs": ["international journal of human-computer studies", "int. j. hum. comput. stud.", "int. j. hum.-comput. stud."],
+        "tochi": ["acm transactions on computer-human interaction"],
+        "imwut": ["proceedings of the acm on interactive mobile wearable and ubiquitous technologies", "ubicomp", "interactive mobile wearable and ubiquitous technologies"],
+        # VR/AR
+        "ieee vr": ["ieee virtual reality", "ieee conference on virtual reality", "ieee vr and 3d user interfaces"],
+        "ismar": ["international symposium on mixed and augmented reality", "ieee international symposium on mixed and augmented reality"],
+        "vrst": ["virtual reality software and technology", "acm symposium on virtual reality software"],
+        # Robotics
+        "icra": ["international conference on robotics and automation", "ieee international conference on robotics and automation"],
+        "iros": ["international conference on intelligent robots and systems", "intelligent robots and systems"],
+        "hri": ["ieee/acm international conference on human-robot interaction", "acm/ieee international conference on human-robot interaction", "human-robot interaction", "international conference on human-robot interaction"],
+        "corl": ["conference on robot learning"],
+        "rss": ["robotics: science and systems", "robotics science and systems"],
+        "ra-l": ["ieee robotics and automation letters", "robotics and automation letters"],
+        "t-ro": ["ieee transactions on robotics"],
+        "ijrr": ["international journal of robotics research"],
+        # Vision/Lang journals
         "t-pami": ["transactions on pattern analysis and machine intelligence", "tpami", "pami"],
         "ijcv": ["international journal of computer vision"],
+        "tip": ["ieee transactions on image processing"],
+        # Application journals
         "eswa": ["expert systems with applications"],
         "kbs": ["knowledge-based systems"],
         "ins": ["information sciences"],
+        "neurocomputing": ["neurocomputing"],
+        "applied soft computing": ["applied soft computing"],
+        "eaai": ["engineering applications of artificial intelligence"],
+        # Medical AI
+        "miccai": ["medical image computing and computer-assisted intervention"],
+        "midl": ["medical imaging with deep learning"],
+        "mia": ["medical image analysis"],
+        "tmi": ["ieee transactions on medical imaging"],
+        # ITS / Transportation
+        "itsc": ["ieee intelligent transportation systems conference"],
+        "t-its": ["ieee transactions on intelligent transportation systems"],
     }
     for short, longs in mapping.items():
         if short in tokens or any(long_name in name for long_name in longs):

@@ -58,6 +58,11 @@ paper-finder/
 
 ## Changelog
 
+### 0.2.1 (2026-05-29)
+- **★ venue 별칭 사전 대폭 확장** (`merge_and_rank.py`): HRI, ICRA, IROS, CoRL, RA-L, T-RO, IJRR, RSS, IEEE VR, ISMAR, VRST, UIST, CSCW, DIS, IMWUT, TOCHI, IJHCI, IJHCS, MICCAI, MIDL, MIA, TMI, ITSC, T-ITS, KDD, IJCAI, ACL, EMNLP, NAACL, WACV, BMVC, TIP, EGSR, Neurocomputing, EAAI 등 **35+ venue alias 추가** (이전 19개 → 50+개).
+- **실측 효과:** VR×Gesture×HRI 25편 검색에서 매칭률 **1/25 → 10/25** 로 10배 개선. 실제 HRI conf 페이퍼(IEEE/ACM 풀네임 표기) 매칭 가능.
+- **lint:** Python syntax OK.
+
 ### 0.2.0 (2026-05-29)
 - **★ Phase 6 신설:** `academic-paper-strategist` 스킬을 sub-skill로 번들 (본인 자작) + 신규 슬래시 명령 `/paper-finder:outline`. directions.md → optimized_outline.md 까지 자동.
 - `/paper-finder:outline`은 별도 호출 (메인 `/find-papers`에는 자동 포함 안 됨 — 방향 선택이 interactive 필요).

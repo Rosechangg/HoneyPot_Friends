@@ -1,6 +1,6 @@
 {
   "name": "paper-finder",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "키워드 기반 학술 논문 자동 검색(arXiv + Semantic Scholar 병렬) + venue 필터링 + 표 레포트(.md/.docx) + 연구 방향 브레인스토밍 + (Phase 6) outline 자동 생성까지 6-phase 파이프라인. 5 sub-skill + /find-papers + /paper-finder:outline 명령.",
   "author": {
     "name": "Rosechang",
