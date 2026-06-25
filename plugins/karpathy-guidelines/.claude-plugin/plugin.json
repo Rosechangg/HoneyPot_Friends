@@ -1,0 +1,16 @@
+{
+  "name": "karpathy-guidelines",
+  "version": "1.0.0",
+  "description": "LLM 코딩 실수를 줄이는 행동 가이드라인 4원칙(Think Before Coding · Simplicity First · Surgical Changes · Goal-Driven Execution). 원본: multica-ai/andrej-karpathy-skills (MIT), Andrej Karpathy 관찰 기반. 출처·각색 내역은 NOTICE.md 참조.",
+  "author": {
+    "name": "Rosechang",
+    "email": "rosechang870827@gmail.com"
+  },
+  "license": "MIT",
+  "keywords": [
+    "guidelines",
+    "best-practices",
+    "coding",
+    "karpathy"
+  ]
+}

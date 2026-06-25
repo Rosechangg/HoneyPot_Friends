@@ -1,8 +1,8 @@
 # HoneyPot_Friends
 
-> Claude Code 플러그인 마켓플레이스 — **학술 연구 워크플로우**: 논문 탐색·작성·제출 전 검증·리뷰어 응답까지 한 묶음
+> Claude Code 플러그인 마켓플레이스 — **학술 연구 워크플로우**(논문 탐색·작성·제출 전 검증·리뷰어 응답) + **개발 가이드라인**
 
-**Version**: 1.2.0 &nbsp;|&nbsp; **Author**: [Rosechang](https://github.com/Rosechangg) &nbsp;|&nbsp; **License**: MIT
+**Version**: 1.3.0 &nbsp;|&nbsp; **Author**: [Rosechang](https://github.com/Rosechangg) &nbsp;|&nbsp; **License**: MIT
 
 > 영감: [orientpine/honeypot](https://github.com/orientpine/honeypot) marketplace 구조
 
@@ -55,6 +55,7 @@ git clone https://github.com/Rosechangg/HoneyPot_Friends.git
 | 탐색·기획 | [**paper-finder**](#paper-finder) | 키워드 → arXiv + Semantic Scholar 검색 → 표 레포트 → 방향 제안 → **outline 자동 생성** (academic-paper-strategist) |
 | 작성 | [**paper-workflow**](#paper-workflow) | outline → **chapter-by-chapter 본문 작성** (academic-paper-composer) + 번역·figure·docx 관리 |
 | 검증 | [**paper-review**](#paper-review) | 제출 전 최종 검증 (submission-hardmode-v2 메인 엔진 + 5-phase 파이프라인) |
+| 개발 가이드 | [**karpathy-guidelines**](#karpathy-guidelines) | LLM 코딩 실수 방지 4원칙. **원본: [multica-ai/andrej-karpathy-skills](https://github.com/multica-ai/andrej-karpathy-skills) (MIT)** |
 
 ---
 
@@ -281,8 +282,41 @@ git clone https://github.com/Rosechangg/HoneyPot_Friends.git
 
 ---
 
+<br>
+
+# 개발 가이드라인
+
+---
+
+## karpathy-guidelines
+
+> LLM이 코딩할 때 자주 저지르는 실수(무단 가정, 과한 추상화, 요청과 무관한 리팩터링)를 줄이는 행동 가이드라인 4원칙. Andrej Karpathy의 LLM 코딩 관찰에서 유래.
+
+> **🔗 출처(Attribution)** — 내용은 **원문 그대로(verbatim)** 가져왔습니다.
+> - 원본 레포: [multica-ai/andrej-karpathy-skills](https://github.com/multica-ai/andrej-karpathy-skills) (License: MIT, author: forrestchang)
+> - 고정 커밋: [`2c60614`](https://github.com/multica-ai/andrej-karpathy-skills/blob/2c606141936f1eeef17fa3043a72095b4765b9c2/skills/karpathy-guidelines/SKILL.md) (`main`, 2026-04-20 기준)
+> - 아이디어 출처: [Andrej Karpathy의 X 게시글](https://x.com/karpathy/status/2015883857489522876)
+> - 전체 라이선스·각색 내역: [`plugins/karpathy-guidelines/NOTICE.md`](plugins/karpathy-guidelines/NOTICE.md)
+
+### 4원칙
+
+| 원칙 | 막아주는 실수 |
+|------|---------------|
+| **Think Before Coding** | 무단 가정, 숨겨진 혼란, 트레이드오프 누락 |
+| **Simplicity First** | 과한 복잡도, 비대한 추상화 |
+| **Surgical Changes** | 요청과 무관한 수정, 건드리면 안 되는 코드 변경 |
+| **Goal-Driven Execution** | 모호한 성공 기준 → tests-first 검증으로 전환 |
+
+### 사용법
+
+별도 슬래시 커맨드 없이, 코드 작성·리뷰·리팩터링 시 스킬이 자동 트리거되거나 명시적으로 로드되어 가이드라인으로 동작합니다. 마켓플레이스를 등록한 친구들은 각자 환경에서 그대로 적용할 수 있습니다.
+
+---
+
 ## 기여 및 라이선스
 
-- License: MIT
+- License: MIT (이 마켓플레이스 자체). 가져온 플러그인의 원본 라이선스·출처는 각 플러그인의 `NOTICE.md`에 별도 표기.
 - Issues / PRs: <https://github.com/Rosechangg/HoneyPot_Friends/issues>
 - 마켓플레이스 구조 영감: [orientpine/honeypot](https://github.com/orientpine/honeypot)
+- 가져온 외부 콘텐츠:
+  - `karpathy-guidelines` ← [multica-ai/andrej-karpathy-skills](https://github.com/multica-ai/andrej-karpathy-skills) (MIT) · idea by [Andrej Karpathy](https://x.com/karpathy/status/2015883857489522876)
