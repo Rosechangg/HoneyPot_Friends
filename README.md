@@ -50,12 +50,16 @@ git clone https://github.com/Rosechangg/HoneyPot_Friends.git
 
 ## 플러그인 한눈에 보기
 
-| 카테고리 | 플러그인 | 설명 |
-|:--------:|----------|------|
-| 탐색·기획 | [**paper-finder**](#paper-finder) | 키워드 → arXiv + Semantic Scholar 검색 → 표 레포트 → 방향 제안 → **outline 자동 생성** (academic-paper-strategist) |
-| 작성 | [**paper-workflow**](#paper-workflow) | outline → **chapter-by-chapter 본문 작성** (academic-paper-composer) + 번역·figure·docx 관리 |
-| 검증 | [**paper-review**](#paper-review) | 제출 전 최종 검증 (submission-hardmode-v2 메인 엔진 + 5-phase 파이프라인) |
-| 개발 가이드 | [**karpathy-guidelines**](#karpathy-guidelines) | LLM 코딩 실수 방지 4원칙. **원본: [multica-ai/andrej-karpathy-skills](https://github.com/multica-ai/andrej-karpathy-skills) (MIT)** |
+> 아래 표는 `scripts/sync_marketplace.py`가 `.claude-plugin/marketplace.json`에서 **자동 생성**합니다. 직접 수정하지 마세요 — 누군가 `plugins/`에 push하면 GitHub Actions가 갱신합니다. (각 플러그인의 자세한 설명은 아래 섹션 참고)
+
+<!-- PLUGINS-TABLE:START -->
+| 플러그인 | 버전 | 카테고리 | 설명 |
+|----------|:----:|:--------:|------|
+| [**paper-finder**](plugins/paper-finder) | `0.2.1` | research | 키워드 기반 학술 논문 자동 검색(arXiv + Semantic Scholar 병렬) → venue 필터링 → 표 레포트(.md/.docx) → 연구 방향 브레인스토밍 → (Phase 6) outline 자동 생성. 6-phase 파이프라인, 5 sub-skill + /find-papers + /paper-finder:outline 명령. |
+| [**paper-workflow**](plugins/paper-workflow) | `1.2.0` | documentation | 영문 학술 논문 작성 통합 워크플로우. outline→chapter 본문 작성(composer), 기본 작성 규칙·한→영 번역·figure·docx 관리까지 9개 스킬 + 5개 슬래시 커맨드. (검증은 paper-review로 분리) |
+| [**paper-review**](plugins/paper-review) | `0.1.0` | verification | 작성한 논문의 제출 전 최종 검증 플러그인. 본인 작성 submission-hardmode-v2를 메인 엔진으로 한 5-phase 파이프라인 (journal-fit → claim-evidence → surface checklist → hardmode → reviewer-response). 5개 스킬 + 2개 슬래시 커맨드. |
+| [**karpathy-guidelines**](plugins/karpathy-guidelines) | `1.0.0` | workflow | LLM 코딩 실수를 줄이는 행동 가이드라인 4원칙(Think Before Coding · Simplicity First · Surgical Changes · Goal-Driven Execution). 원본: multica-ai/andrej-karpathy-skills (MIT). 출처·각색 내역은 plugins/karpathy-guidelines/NOTICE.md 참조. |
+<!-- PLUGINS-TABLE:END -->
 
 ---
 
@@ -310,6 +314,37 @@ git clone https://github.com/Rosechangg/HoneyPot_Friends.git
 ### 사용법
 
 별도 슬래시 커맨드 없이, 코드 작성·리뷰·리팩터링 시 스킬이 자동 트리거되거나 명시적으로 로드되어 가이드라인으로 동작합니다. 마켓플레이스를 등록한 친구들은 각자 환경에서 그대로 적용할 수 있습니다.
+
+---
+
+<br>
+
+# 기여 방법 (자동 동기화)
+
+> 친구들이 플러그인을 추가하거나 고칠 때 **마켓플레이스 등록·README 표를 직접 손댈 필요가 없습니다.** `plugins/` 폴더만 바꿔서 push하면 GitHub Actions가 나머지를 맞춰줍니다.
+
+### 새 플러그인 추가하기
+
+1. `plugins/<내-플러그인>/.claude-plugin/plugin.json` 작성 (필수: `name`, 권장: `version`, `description`, `author`, `license`)
+2. `plugins/<내-플러그인>/skills/`, `commands/`, `agents/` 에 내용 추가
+3. `main`에 push (또는 PR)
+
+### push하면 자동으로 일어나는 일 ([`.github/workflows/sync-marketplace.yml`](.github/workflows/sync-marketplace.yml))
+
+| 단계 | 내용 |
+|------|------|
+| 검증 | 모든 `plugin.json` / `marketplace.json` JSON 유효성 + `name` 존재 확인 (PR은 여기까지) |
+| 등록 | `plugins/`에 있는데 `marketplace.json`에 없는 플러그인을 **자동 등록**, 사라진 폴더의 항목은 제거 |
+| 동기화 | 각 플러그인의 `version`과 `skills`/`commands`/`agents` 파일 목록을 `marketplace.json`에 반영 + 마켓플레이스 버전 patch bump |
+| 표 갱신 | 위 "플러그인 한눈에 보기" 표를 `marketplace.json` 기준으로 재생성 |
+| 되커밋 | 변경분을 `chore: auto-sync ...` 커밋으로 자동 push (main 직접 push / 수동 실행 시) |
+
+### 규칙 (단일 진실 공급원)
+
+- **버전·파일 목록** = 각 플러그인의 `plugin.json` + 폴더 구조가 기준 → 자동 전파됨
+- **설명·author·license** = `marketplace.json`에 큐레이션된 값을 유지 (신규 플러그인만 `plugin.json`에서 채움)
+- `marketplace.json`의 플러그인 배열과 README 표는 **손으로 고치지 말 것** (다음 sync가 덮어씀)
+- 로컬에서 미리 맞춰보고 싶으면: `python scripts/sync_marketplace.py` (검증만: `--check`)
 
 ---
 

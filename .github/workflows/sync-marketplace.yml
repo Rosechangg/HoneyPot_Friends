@@ -1,0 +1,60 @@
+name: Sync marketplace
+
+# 누가 plugins/ 를 push 하면 marketplace.json + README 표를 자동으로 맞추고 되커밋한다.
+# PR 에서는 검증만 하고(되커밋 X), main 직접 push / 수동 실행에서만 동기화 커밋을 만든다.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "plugins/**"
+      - ".claude-plugin/marketplace.json"
+      - "README.md"
+      - "scripts/sync_marketplace.py"
+      - ".github/workflows/sync-marketplace.yml"
+  pull_request:
+    paths:
+      - "plugins/**"
+      - ".claude-plugin/marketplace.json"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: sync-marketplace-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+
+      # PR: 검증만 (JSON 유효성 / name 존재). 되커밋하지 않음.
+      - name: Validate (pull request)
+        if: github.event_name == 'pull_request'
+        run: python scripts/sync_marketplace.py --check
+
+      # main push / 수동 실행: 동기화 후 변경분 되커밋
+      - name: Sync
+        if: github.event_name != 'pull_request'
+        run: python scripts/sync_marketplace.py
+
+      - name: Commit & push if changed
+        if: github.event_name != 'pull_request'
+        run: |
+          if [[ -n "$(git status --porcelain)" ]]; then
+            git config user.name  "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add -A
+            git commit -m "chore: auto-sync marketplace + README [skip ci]"
+            git push
+            echo "Pushed auto-sync commit."
+          else
+            echo "Already in sync - nothing to commit."
+          fi
