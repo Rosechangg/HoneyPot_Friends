@@ -129,6 +129,7 @@ to explicitly include plans for [구체적 계획].
 - 새 Figure/Table 추가 시 명시
 - 새 Reference 추가 시: 저자명 + 연도를 명시 (전체 인용 정보는 manuscript References list에)
 - **부연 설명·메타정보 금지**: "(highlighted in green)", "(pending)", "Brief paragraph added..." 같은 설명은 빼고 Section / Line / References / Figure / Table만 깔끔히
+- **Run 서식 (IUI 확정 컨벤션 — 반드시 일치)**: 각 항목은 **별도 단락**. `∙ Section X.Y` = **bold**(검정); `- Line A-B` · `- Equation (n)` · 기타 항목 = *italic*(검정); `- Table N` · `- Figure N` = 서식 없음(일반); `∙ N References` = **bold**, 그 아래 `- Citation` = 일반. 섹션 블록 사이에는 **빈 단락 1줄**. 새 단락은 셀 기본 단락의 pPr(줄간격·spacing)을 복제해 동일하게.
 
 ## Step 5: Manuscript와 References list 동기화 (필수)
 
@@ -152,7 +153,8 @@ to explicitly include plans for [구체적 계획].
 - 양쪽 정렬 (justify)
 - 줄간격 1.5
 - paragraph 간 추가 spacing 없음 (space_before / space_after = 0)
-- 색상: 검정 (초록색은 manuscript 변경 표시 전용, response 본문에는 사용하지 않음)
+- 색상: 본문은 검정. **단, 수정 위치를 가리키는 구절은 빨강 이탤릭(font color = C00000, italic)** — `<기술적 섹션명> (Section X.Y)` 형태로 표기. 예: *Evaluation metrics (Section 4.5)*, *Limitations of single-channel monitoring (Section 5.3.1)*, *Table 11*. 이 빨강 이탤릭으로 "어디를 고쳤는지"가 한눈에 보이게 함.
+- 초록색은 manuscript 변경 표시 전용 (response 본문에는 사용하지 않음)
 
 `Edited Section` 셀:
 - 짧은 list 형태
@@ -178,5 +180,5 @@ to explicitly include plans for [구체적 계획].
 6. **revised manuscript에서 변경 부분은 초록색으로 하이라이트**
 7. **새 reference 인용 시 manuscript References list에도 알파벳 순 위치에 항목 추가** (citation-list 동기화)
 8. **기존 텍스트 대체 시 strikethrough + 초록색으로 삭제 표시, 새 텍스트는 초록색**
-9. **Response letter는 검정색, 양쪽 정렬, 줄간격 1.5**
-10. **Edited Section은 Section / Line / References / Figure / Table만 — 메타 설명 금지**
+9. **Response letter 본문은 검정·양쪽정렬·줄간격 1.5. 단, 수정 위치 구절은 빨강 이탤릭(C00000)으로 표기** (`<섹션명> (Section X.Y)`, `Table N`)
+10. **Edited Section은 Section / Line / References / Figure / Table만 — 메타 설명 금지. Run 서식: `∙ Section`=bold, `- Line/Equation`=italic, `- Table/Figure`=일반 (IUI 컨벤션)**
