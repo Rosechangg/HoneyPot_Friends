@@ -57,8 +57,9 @@ git clone https://github.com/Rosechangg/HoneyPot_Friends.git
 |----------|:----:|:--------:|------|
 | [**paper-finder**](plugins/paper-finder) | `0.2.1` | research | 키워드 기반 학술 논문 자동 검색(arXiv + Semantic Scholar 병렬) → venue 필터링 → 표 레포트(.md/.docx) → 연구 방향 브레인스토밍 → (Phase 6) outline 자동 생성. 6-phase 파이프라인, 5 sub-skill + /find-papers + /paper-finder:outline 명령. |
 | [**paper-workflow**](plugins/paper-workflow) | `1.2.0` | documentation | 영문 학술 논문 작성 통합 워크플로우. outline→chapter 본문 작성(composer), 기본 작성 규칙·한→영 번역·figure·docx 관리까지 9개 스킬 + 5개 슬래시 커맨드. (검증은 paper-review로 분리) |
-| [**paper-review**](plugins/paper-review) | `0.1.0` | verification | 작성한 논문의 제출 전 최종 검증 플러그인. 본인 작성 submission-hardmode-v2를 메인 엔진으로 한 5-phase 파이프라인 (journal-fit → claim-evidence → surface checklist → hardmode → reviewer-response). 5개 스킬 + 2개 슬래시 커맨드. |
+| [**paper-review**](plugins/paper-review) | `0.1.0` | verification | 작성한 논문의 제출 전 최종 검증 플러그인. submission-hardmode-v2(적대적 리뷰어 시뮬레이션)를 메인 엔진으로 한 5-phase 파이프라인(journal-fit → claim-evidence → surface checklist → hardmode → reviewer-response). 3개 스킬 + 1개 슬래시 커맨드(/verify). 일부 단계 스킬은 자매 플러그인 paper-revision에서 이름으로 호출. 리뷰 받은 후 리비전은 paper-revision 담당. |
 | [**karpathy-guidelines**](plugins/karpathy-guidelines) | `1.0.0` | workflow | LLM 코딩 실수를 줄이는 행동 가이드라인 4원칙(Think Before Coding · Simplicity First · Surgical Changes · Goal-Driven Execution). 원본: multica-ai/andrej-karpathy-skills (MIT). 출처·각색 내역은 plugins/karpathy-guidelines/NOTICE.md 참조. |
+| [**paper-revision**](plugins/paper-revision) | `0.1.0` | revision | Journal paper revision 워크플로우 통합 플러그인. 리뷰어 코멘트 파싱·분류(실험 vs 텍스트)·노력 산정부터 Response-to-Reviewers letter(표 포맷, 기존 서식 보존)·point-by-point 응답·본문 수정·검증까지 한 흐름으로 묶는다. revision-workflow 오케스트레이터 + reviewer-response·claim-evidence-mapper·eswa-paper-review-checklist 4개 스킬 + 2개 슬래시 커맨드(/revision, /respond). |
 <!-- PLUGINS-TABLE:END -->
 
 ---

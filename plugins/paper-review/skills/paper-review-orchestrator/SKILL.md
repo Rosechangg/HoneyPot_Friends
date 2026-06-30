@@ -33,14 +33,14 @@ target 저널의 scope·평균 분량·요구하는 통계 엄격성·typical co
 산출물: `phase1_journal_fit.md` (PASS/WARN/FAIL + 사유)
 
 ### Phase 2 — Claim ↔ Evidence Mapping
-**Skill:** `claim-evidence-mapper` (이 플러그인)
+**Skill:** `claim-evidence-mapper` (paper-revision 플러그인; 이름으로 invoke)
 
 paper 본문에서 모든 contribution claim·numerical claim을 추출 → 그 클레임을 뒷받침하는 실험 결과·표·figure를 매핑. **증거 없는 클레임은 over-claiming 위험**으로 표시.
 
 산출물: `phase2_claim_evidence_map.md` (표: Claim / Supporting Result / Statistical Strength / Limitation)
 
 ### Phase 3 — Surface Quality Checklist
-**Skill:** `eswa-paper-review-checklist` (이 플러그인 내, 원래 paper-workflow에서 이동됨)
+**Skill:** `eswa-paper-review-checklist` (paper-revision 플러그인; 이름으로 invoke)
 
 - 문장 흐름·전환어 다양성
 - 용어 일관성 (한 개념 = 한 용어)
@@ -70,11 +70,11 @@ paper 본문에서 모든 contribution claim·numerical claim을 추출 → 그 
 submission-hardmode-v2의 `DESIGN_SPEC.yaml`에 정의된 5-phase 내부 흐름이 그대로 호출된다 (orchestrator가 wrap만 함).
 
 ### Phase 5 — Reviewer Response Letter (선택)
-**Skill:** `reviewer-response` (이 플러그인)
+**Skill:** `reviewer-response` (paper-revision 플러그인; 이름으로 invoke)
 
 이미 리뷰어 코멘트를 받은 상태(revision 단계)라면 Phase 5 단독 실행 가능. point-by-point response letter를 4단계 패턴(이해 → 인정/반박 → 수정 위치 → 인용)으로 작성.
 
-`/paper-review:respond` 명령으로 단독 호출도 가능.
+> 리비전 전체(코멘트 분류·실험·응답·본문수정)는 자매 플러그인 **paper-revision**의 `revision-workflow` / `/paper-revision:revision`를 사용하는 것을 권장. 단독 응답 작성은 `/paper-revision:respond`.
 
 ## 출력 디렉토리
 

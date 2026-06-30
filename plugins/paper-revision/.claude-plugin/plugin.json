@@ -1,0 +1,10 @@
+{
+  "name": "paper-revision",
+  "version": "0.1.0",
+  "description": "Journal paper revision 워크플로우 통합 플러그인. 리뷰어 코멘트 파싱·분류(실험 vs 텍스트)·노력 산정부터 Response-to-Reviewers letter(표 포맷, 기존 서식 보존)·point-by-point 응답·본문 수정·검증까지 한 흐름으로 묶는다. revision-workflow 오케스트레이터 + reviewer-response·claim-evidence-mapper·eswa-paper-review-checklist 4개 스킬 + 2개 슬래시 커맨드(/revision, /respond).",
+  "author": {
+    "name": "Rosechang",
+    "email": "rosechang870827@gmail.com"
+  },
+  "license": "MIT"
+}

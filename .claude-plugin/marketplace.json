@@ -5,7 +5,7 @@
     "url": "https://github.com/Rosechangg"
   },
   "metadata": {
-    "version": "1.3.0",
+    "version": "1.3.1",
     "description": "학술 연구 워크플로우 Claude Code 플러그인 마켓플레이스 — 논문 탐색·outline(paper-finder) + 작성·composer(paper-workflow) + 제출 전 검증(paper-review: submission-hardmode-v2 메인 엔진) + 개발 가이드라인(karpathy-guidelines, 원본 multica-ai/andrej-karpathy-skills)"
   },
   "plugins": [
@@ -54,7 +54,7 @@
     {
       "name": "paper-review",
       "source": "./plugins/paper-review",
-      "description": "작성한 논문의 제출 전 최종 검증 플러그인. 본인 작성 submission-hardmode-v2를 메인 엔진으로 한 5-phase 파이프라인 (journal-fit → claim-evidence → surface checklist → hardmode → reviewer-response). 5개 스킬 + 2개 슬래시 커맨드.",
+      "description": "작성한 논문의 제출 전 최종 검증 플러그인. submission-hardmode-v2(적대적 리뷰어 시뮬레이션)를 메인 엔진으로 한 5-phase 파이프라인(journal-fit → claim-evidence → surface checklist → hardmode → reviewer-response). 3개 스킬 + 1개 슬래시 커맨드(/verify). 일부 단계 스킬은 자매 플러그인 paper-revision에서 이름으로 호출. 리뷰 받은 후 리비전은 paper-revision 담당.",
       "version": "0.1.0",
       "author": {
         "name": "Rosechang",
@@ -64,8 +64,7 @@
       "category": "verification",
       "strict": true,
       "commands": [
-        "./commands/verify.md",
-        "./commands/respond.md"
+        "./commands/verify.md"
       ],
       "skills": [
         "./skills"
@@ -83,6 +82,25 @@
       "license": "MIT",
       "category": "workflow",
       "strict": true,
+      "skills": [
+        "./skills"
+      ]
+    },
+    {
+      "name": "paper-revision",
+      "source": "./plugins/paper-revision",
+      "description": "Journal paper revision 워크플로우 통합 플러그인. 리뷰어 코멘트 파싱·분류(실험 vs 텍스트)·노력 산정부터 Response-to-Reviewers letter(표 포맷, 기존 서식 보존)·point-by-point 응답·본문 수정·검증까지 한 흐름으로 묶는다. revision-workflow 오케스트레이터 + reviewer-response·claim-evidence-mapper·eswa-paper-review-checklist 4개 스킬 + 2개 슬래시 커맨드(/revision, /respond).",
+      "version": "0.1.0",
+      "author": {
+        "name": "Rosechang",
+        "email": "rosechang870827@gmail.com"
+      },
+      "license": "MIT",
+      "category": "revision",
+      "commands": [
+        "./commands/respond.md",
+        "./commands/revision.md"
+      ],
       "skills": [
         "./skills"
       ]

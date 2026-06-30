@@ -2,20 +2,20 @@
 description: 리뷰어 코멘트(received reviews) → 4단계 패턴 point-by-point response letter 생성 (reviewer-response 스킬 활용)
 ---
 
-# /paper-review:respond
+# /paper-revision:respond
 
 리뷰어 코멘트를 받았을 때 point-by-point response letter 자동 작성.
 
 ## 사용법
 
 ```
-/paper-review:respond <reviewer comments path> [--manuscript=paper.docx] [--out=response.md]
+/paper-revision:respond <reviewer comments path> [--manuscript=paper.docx] [--out=response.md]
 ```
 
 ### 예시
 
-- `/paper-review:respond reviews.md --manuscript=paper_revised.docx`
-- `/paper-review:respond reviewer_comments.pdf --out=response_letter_v2.md`
+- `/paper-revision:respond reviews.md --manuscript=paper_revised.docx`
+- `/paper-revision:respond reviewer_comments.pdf --out=response_letter_v2.md`
 
 ## 실행 흐름
 
