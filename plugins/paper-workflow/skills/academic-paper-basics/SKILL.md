@@ -74,6 +74,13 @@ Academic papers repeatedly fail basic quality checks. These rules must be enforc
 - GOOD: "We found two observations. First..., second..."
 - Colons are acceptable ONLY in table captions, figure captions, and section headings
 
+## RULE 5B: Parentheses (minimize)
+- Minimize parenthetical asides in body text; prefer a comma, a relative/subordinate clause, or splitting into a separate sentence
+- BAD: "a purely additive (linear) model" → GOOD: "a purely additive model" (drop the redundant gloss), or "a purely additive, linear model"
+- BAD: "the prediction error (N: number of samples)" → GOOD: "the prediction error for N samples", or "..., where N is the number of samples"
+- BAD: "41.5 % (about 27 drivers)" → GOOD: "41.5 %, about 27 drivers" (trailing appositive with a comma)
+- KEEP parentheses ONLY for: acronym definition on first use ("Random Forest (RF)"), in-text citations ("(Grabisch, 1997)"), and mathematical grouping or equation numbers ("(1/N)", "(7)")
+
 ## RULE 6: Number Consistency (CRITICAL — RECURRING MISTAKE)
 - Pick ONE convention and use throughout
 - Convention A: spell out <10, numerals ≥10 ("five types", "18 features")
