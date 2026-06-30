@@ -62,7 +62,8 @@ Academic papers repeatedly fail basic quality checks. These rules must be enforc
 - BAD: "This assumption needs..." → GOOD: "The homogeneity assumption needs..."
 - BAD: "This study identifies..." → acceptable as fixed academic phrase, but prefer "The present study identifies..." or "Our study identifies..."
 - BAD: "This high readiness..." → GOOD: "The observed high readiness..."
-- Every pronoun at sentence start MUST be followed by or paired with a specific noun
+- BAD: "This is the first...", "That is because...", "These are..." (a demonstrative directly followed by a verb = no referent noun) → GOOD: "The present study is the first...", "This occurs because...", "These findings are..."
+- Every pronoun at sentence start MUST be followed by or paired with a specific noun; a demonstrative (this/that/these/those) must be immediately followed by a noun, never by a verb (write "this result is", not "this is")
 
 ## RULE 5: Colons (CRITICAL)
 - AVOID colons (":") for list introductions or explanations
