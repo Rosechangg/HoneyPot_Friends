@@ -157,8 +157,9 @@ to explicitly include plans for [구체적 계획].
 - 초록색은 manuscript 변경 표시 전용 (response 본문에는 사용하지 않음)
 
 `Edited Section` 셀:
-- 짧은 list 형태
-- Section / Line / References / Figure / Table만 포함
+- 짧은 list 형태, **줄간격 1.5** (Authors' Responses 셀과 동일)
+- Section / Line / References / Figure / Table만 포함 (위치 라벨만)
+- **내용 서술 금지**: "- Definition of M_c and displayed equation", "- Worked example (50th percentile)" 같은 *무엇을 했는지* 설명은 넣지 말 것. `∙ Section 5.3.1` + `- Table 11`처럼 **위치만**. Table은 부연 없이 `- Table 11`로만.
 - 부연 설명·메타정보·placeholder 안내 금지
 
 ## Step 7: 변경 표시 (manuscript)
