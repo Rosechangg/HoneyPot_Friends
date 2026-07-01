@@ -152,7 +152,7 @@ to explicitly include plans for [구체적 계획].
 `Authors' Responses` 셀:
 - 양쪽 정렬 (justify)
 - 줄간격 1.5
-- **가독성 위해 논리적 문단으로 분리** (여는 감사 / 본문 / 닫는 감사, 또는 코멘트 파트별). **문단 사이에 빈 단락 1줄**을 넣어 구분 — 하나의 큰 덩어리(dense block) 금지. 각 문단 줄간격 1.5·justify. 문단 재구성 시 **아래첨자/위첨자 서식(예: M_c의 c) 반드시 보존**.
+- **가독성 위해 논리적 문단으로 분리** (여는 감사 / 본문 / 닫는 감사, 또는 코멘트 파트별). **문단 사이에 빈 단락 1줄**을 넣어 구분 — 하나의 큰 덩어리(dense block) 금지. **문단 수는 고정 아님 · 내용에 따라 유동적**: 짧은 응답(예: Editor)은 1문단으로, 긴 본문은 소주제별로 더 분할. 각 문단 줄간격 1.5·justify. 문단 재구성 시 **아래첨자/위첨자 서식(예: M_c의 c) 반드시 보존**.
 - 색상: 본문은 검정. **단, 수정 위치를 가리키는 구절은 빨강 이탤릭(font color = C00000, italic)** — `<기술적 섹션명> (Section X.Y)` 형태로 표기. 예: *Evaluation metrics (Section 4.5)*, *Limitations of single-channel monitoring (Section 5.3.1)*, *Table 11*. 이 빨강 이탤릭으로 "어디를 고쳤는지"가 한눈에 보이게 함.
 - 초록색은 manuscript 변경 표시 전용 (response 본문에는 사용하지 않음)
 
