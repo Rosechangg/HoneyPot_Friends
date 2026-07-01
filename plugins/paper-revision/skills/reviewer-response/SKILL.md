@@ -101,7 +101,7 @@ to explicitly include plans for [구체적 계획].
 - 일반 동의: "We appreciate the reviewer for raising this important point regarding..."
 - 감사+설명: "Thank you for the valuable suggestion regarding..."
 - 결과 보고: "In response, we have conducted/revised/updated..."
-- cross-ref: "As also discussed in our response to [R2-1]..."
+- cross-ref (⚠️ 같은 리뷰어 내에서만): "As also discussed in our response to [R1-2]..." — 응답은 리뷰어별로 개별 전달되므로 **다른 리뷰어의 코멘트 ID를 언급 금지**(예: Reviewer #2 응답에서 "response to R4-4d" 쓰면 안 됨). 반드시 언급이 필요하면 코멘트 ID 대신 섹션/표로 참조.
 
 ### 금지 사항
 - "We disagree" → "While we understand the concern, our analysis suggests..."
@@ -176,7 +176,7 @@ to explicitly include plans for [구체적 계획].
 1. **모든 코멘트에 구체적 수정 위치(Section, Line) 명시**
 2. **실험 결과는 수치 직접 인용** (r=0.32, p=0.001 등)
 3. **수정하지 않은 경우에도 이유 설명**
-4. **관련 코멘트끼리 cross-reference**
+4. **관련 코멘트끼리 cross-reference — 단, 같은 리뷰어 내에서만** (응답은 리뷰어별 개별 전달 → 다른 리뷰어 코멘트 ID 언급 금지; 필요 시 섹션/표로 참조)
 5. **톤은 항상 감사 + 건설적** (적극 수용 자세)
 6. **revised manuscript에서 변경 부분은 초록색으로 하이라이트**
 7. **새 reference 인용 시 manuscript References list에도 알파벳 순 위치에 항목 추가** (citation-list 동기화)
